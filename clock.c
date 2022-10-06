@@ -2,16 +2,30 @@
 
 pthread_mutex_t lock;
 pthread_t tid[2];
+
+int zikloa;
+void* erlojua(void* arg){
+    unsigned long i=0;
+    zikloa+=1;
+    printf("\n Hasiera : %d\n",zikloa);
+    for(i=0; i< (0xFFFFFFFF); i++){
+        ;
+    }
+    printf("\n Amaiera: %d\n", zikloa);
+
+    return NULL;
+
+}
+
 int main(){
-    zikloa=0;
     int i=0;
     int error;
-    if(phtread_mutex_init(&lock,NULL) !=0){
+    if(pthread_mutex_init(&lock,NULL) !=0){
         printf("\n mutex init has failed\n");
         return 1;
     }
     while (i<2){
-        error=pthread_create(&(tid[i]),NULL, NULL,NULL);
+        error=pthread_create(&(tid[i]),NULL,erlojua,NULL);
         if(error !=0)
             printf("\n >Thread can't be created : [%s]",strerror(error));
         i++;    
@@ -24,9 +38,3 @@ int main(){
     return 0;
 }
 
-void* erlojua(void* arg){
-
-    while (1){
-        
-    }
-}
