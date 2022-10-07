@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "globalvariables.h": "c"
+        "globalvariables.h": "c",
+        "stdio.h": "c"
     }
 }
