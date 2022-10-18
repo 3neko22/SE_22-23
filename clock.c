@@ -24,7 +24,7 @@ int main(){
         pthread_mutex_lock(&lock);
         tick=0;
         while(tick<maiztasuna){
-            if (pthread_cond_init(&cond,NULL)!=0){
+            if (pthread_cond_init(&cond,NULL)!=0){//Baldintza hari sortu errorea baldin badago orduan atera
                 printf("\n condicional mutex initialitation has failed\n");
                 return -1;
             }
@@ -37,6 +37,7 @@ int main(){
         }
         pthread_cond_broadcast(&cond2);
         pthread_mutex_unlock(&lock);
+        printf("Ondo goaz %d lock", &tick);
     }
     return 1;
 }
