@@ -1,45 +1,31 @@
-#include "globalVariables.h"
+#include "clock.h"
 
-int tick;
-void* erlojua(void* arg){
-    unsigned long i=0;
-    tick+=1;
-    printf("\n Hasiera : %d\n",tick);
-    for(i=0; i< maiztasuna; i++){
-        ;
-    }
-    printf("\n Amaiera: %d\n", tick);
-
-    return NULL;
-
-}
-
-int main(){
+ void* erlojua(void* arg){
 
     if(pthread_mutex_init(&lock,NULL)!=0){
         printf("\n mutex init has failed\n");
-        return -1;
+        return ;
     }
     while(1){
         pthread_mutex_lock(&lock);
         tick=0;
-        while(tick<maiztasuna){
+        while(tick<MAIZTASUNA){
             if (pthread_cond_init(&cond,NULL)!=0){//Baldintza hari sortu errorea baldin badago orduan atera
                 printf("\n condicional mutex initialitation has failed\n");
-                return -1;
+                break;
             }
             pthread_cond_wait(&cond,&lock);//tiene que esperar por lo cual se desactiva el mutex
+            tick++;
         }
         tick=0;
         if(pthread_cond_init(&cond2,NULL)!=0){
             printf("\n condicional mutex initialitation has failed\n");
-            return -1;
+            break;
         }
         pthread_cond_broadcast(&cond2);
         pthread_mutex_unlock(&lock);
-        printf("Ondo goaz %d lock", &tick);
+        break;
     }
-    return 1;
 }
 
 //  int i=0;

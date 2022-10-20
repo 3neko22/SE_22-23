@@ -1,11 +1,13 @@
-#include <pthread.h>
+#ifndef GLOBAL_H
+#define GLOBAL_H
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+#include <pthread.h>
 #include <time.h>
-extern int tick;
-const int maiztasuna=7.0;
+#define MAIZTASUNA 100000
+extern int tick,done;
 extern pthread_mutex_t lock;
-extern pthread_t tid;
+extern pthread_t tidClock, tidTimer;
 extern pthread_cond_t cond,cond2;
+extern void* erlojua(void* arg);
+extern void* timer(void* arg);
+#endif
