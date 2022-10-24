@@ -4,27 +4,28 @@
 
     if(pthread_mutex_init(&lock,NULL)!=0){
         printf("\n mutex init has failed\n");
-        return ;
     }
-    while(1){
-        pthread_mutex_lock(&lock);
-        tick=0;
-        while(tick<MAIZTASUNA){
+    
+    else{
+        while(1){
+            pthread_mutex_lock(&lock);
+            done=0;
             if (pthread_cond_init(&cond,NULL)!=0){//Baldintza hari sortu errorea baldin badago orduan atera
+                    printf("\n condicional mutex initialitation has failed\n");
+                    break;
+                }
+            pthread_cond_wait(&cond,&lock);//tiene que esperar por lo cual se desactiva el mutex
+            printf("Hola\n %d",done);
+            done=0;
+            if(pthread_cond_init(&cond2,NULL)!=0){
                 printf("\n condicional mutex initialitation has failed\n");
                 break;
             }
-            pthread_cond_wait(&cond,&lock);//tiene que esperar por lo cual se desactiva el mutex
-            tick++;
+            pthread_cond_broadcast(&cond2);
+            printf("done: %d\n",done);
+            pthread_mutex_unlock(&lock);
         }
-        tick=0;
-        if(pthread_cond_init(&cond2,NULL)!=0){
-            printf("\n condicional mutex initialitation has failed\n");
-            break;
-        }
-        pthread_cond_broadcast(&cond2);
-        pthread_mutex_unlock(&lock);
-        break;
+        printf("EGINDA\n");
     }
 }
 

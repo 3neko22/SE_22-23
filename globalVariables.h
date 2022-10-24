@@ -4,10 +4,12 @@
 #include <pthread.h>
 #include <time.h>
 #define MAIZTASUNA 100000
-extern int tick,done;
-extern pthread_mutex_t lock;
+/**
+ * done erabiliko da timer-a periodo iristen denean eta erlojura bueltatuko da
+ * tick erabiliko da 
+*/
+extern int tick,done; 
+extern pthread_mutex_t lock;// lehenengo mutex-a oraindik bakarrik bat erabilita
 extern pthread_t tidClock, tidTimer;
 extern pthread_cond_t cond,cond2;
-extern void* erlojua(void* arg);
-extern void* timer(void* arg);
 #endif

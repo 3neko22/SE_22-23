@@ -1,2 +1,2 @@
-app: main.c globalVariables.h
-	cc -o app main.c clock.c timer.c
+Programa: main.c globalVariables.h
+	cc -o Programa main.c clock.c timer.c

@@ -6,5 +6,5 @@
 #include <time.h>
 #include <stdlib.h>
 extern pthread_t tid;
-extern void* erlojua(void* arg);
+void* erlojua(void* arg);
 #endif

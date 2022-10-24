@@ -5,6 +5,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include "globalVariables.h"
+#define PERIODO 50000
 extern pthread_t tidTimer;
-extern void* timer(void *arg);
+void* timer(void *arg);
 #endif
