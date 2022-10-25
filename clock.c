@@ -10,22 +10,15 @@
         while(1){
             pthread_mutex_lock(&lock);
             done=0;
-            if (pthread_cond_init(&cond,NULL)!=0){//Baldintza hari sortu errorea baldin badago orduan atera
-                    printf("\n condicional mutex initialitation has failed\n");
-                    break;
-                }
-            pthread_cond_wait(&cond,&lock);//tiene que esperar por lo cual se desactiva el mutex
-            printf("Hola\n %d",done);
-            done=0;
-            if(pthread_cond_init(&cond2,NULL)!=0){
-                printf("\n condicional mutex initialitation has failed\n");
-                break;
+            while (done>TENP_KOP){
+                pthread_cond_wait(&cond,&lock);//tiene que esperar por lo cual se desactiva el mutex
+                printf("\nTimer eginda:%d\n",done);
             }
+            done=0;
             pthread_cond_broadcast(&cond2);
-            printf("done: %d\n",done);
+            //printf("done: %d\n",done);
             pthread_mutex_unlock(&lock);
         }
-        printf("EGINDA\n");
     }
 }
 

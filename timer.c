@@ -2,14 +2,18 @@
 
 void* timer(void* arg){
     pthread_mutex_lock(&lock);
-    while (1){
-        done++;
-        //printf("DONE %d\n",done);
-        if(done > PERIODO){
-            done=0;
-            printf("done %d\n", done);
-            pthread_cond_signal(&cond);
+    tickP=0;
+    while (tickP< PERIODO_PROCESSGEN || tickS < PERIODO_SCHEDULER){
+        if(tickP< PERIODO_PROCESSGEN){
+            tickP++;
+            printf("tick Process\n");
         }
-        pthread_cond_wait(&cond2,&lock);
+        if(tickS< PERIODO_SCHEDULER){
+            tickS++;
+            printf("tick Scheduler\n");
+        }
+        done++;
     }
+    pthread_cond_signal(&cond);
+    pthread_cond_wait(&cond2,&lock);
 }
