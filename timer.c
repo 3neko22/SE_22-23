@@ -3,11 +3,11 @@
 void* timer(void* arg){
     pthread_mutex_lock(&lock);
     while (1){
-        if(tickP >=PERIODO_PROCESSGEN){
+        if(tickP >=PROCC_PERIOD){
             tickP=0;
             printf("tick Process\n");
         }
-        if(tickS >=PERIODO_SCHEDULER){
+        if(tickS >=SCHE_PERIOD){
             tickS=0;
             printf("tick Scheduler\n");
         } 

@@ -3,7 +3,12 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <time.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <ctype.h>
 #define TENP_KOP 2
+
+extern int SCHE_PERIOD, PROCC_PERIOD; // Shceduler eta prozesu sorkuntzaren peridoa
 
 extern int done; //done erabiliko da jakiteko zenbat timer amaitu badute
 

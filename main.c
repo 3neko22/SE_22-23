@@ -12,9 +12,30 @@ int done;
 
 int tickP,tickS;
 
+int SCHE_PERIOD,PROCC_PERIOD;
 //Programa nagusia
-int main (){
-    
+int main (int argc, char *argv[]){
+    SCHE_PERIOD=40000;
+    PROCC_PERIOD=30000;
+    int opt;
+    while ((opt=getopt(argc,argv,":s:p:"))!=-1){
+        switch(opt){
+            case 's'://scheduler
+                SCHE_PERIOD=atoi(optarg);
+                break;
+            case 'p'://process generator
+                PROCC_PERIOD=atoi(optarg);
+                break;
+            case ':':// por ejemplo poner -s sin asignarle valor
+                printf("\nEz duzu sartu baliorik\n");
+                break;
+            case '?':
+                printf("\nDefault balioak sartuta \n");
+        }
+        
+    }
+    printf("\n Scheduler-aren periodoa %d\n",SCHE_PERIOD);
+    printf("\n Process-aren peridoa %d \n",PROCC_PERIOD);
     //Hasieraketak
     done=0;
     tickP=0;tickS=0;

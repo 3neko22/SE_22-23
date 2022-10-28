@@ -1,7 +1,6 @@
 #include "clock.h"
 
  void* erlojua(void* arg){
-
     if(pthread_mutex_init(&lock,NULL)!=0){
         printf("\n mutex init has failed\n");
     }
@@ -10,7 +9,7 @@
         while(1){
             pthread_mutex_lock(&lock);
             done=0;
-            while (done>TENP_KOP){
+            while (done<TENP_KOP){
                 pthread_cond_wait(&cond,&lock);//tiene que esperar por lo cual se desactiva el mutex
                 printf("\nTimer eginda:%d\n",done);
             }
