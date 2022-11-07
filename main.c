@@ -1,7 +1,7 @@
 #include "globalVariables.h"
 #include "clock.h"
 #include "timer.h"
-pthread_t tidClock,tidTimer,tidTimer2;
+pthread_t tidClock,tidTimerProcess,tidTimerScheduler;
 
 pthread_cond_t cond=PTHREAD_COND_INITIALIZER;
 pthread_cond_t cond2=PTHREAD_COND_INITIALIZER;
@@ -47,16 +47,22 @@ int main (int argc, char *argv[]){
         printf("\n condicional mutex initialitation has failed\n");
         return -1;
     }
+    
 
     //Exekuzio-kodea
+    
     while (1){
+        if(pthread_mutex_init(&lock,NULL)!=0){
+            printf("\n mutex init has failed\n");
+            return -1;
+        }
         if(pthread_create(&tidClock,NULL,&erlojua,NULL)!=0){
             return -1;
         }
-        if(pthread_create(&tidTimer,NULL,&timer,NULL)!=0){
+        if(pthread_create(&tidTimerProcess,NULL,&timerProcess,NULL)!=0){
             return -1;
         }
-        if(pthread_create(&tidTimer2,NULL,&timer,NULL)!=0){
+        if(pthread_create(&tidTimerScheduler,NULL,&timerScheduler,NULL)!=0){
             return -1;
         }
     }

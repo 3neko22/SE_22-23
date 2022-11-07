@@ -1,21 +1,35 @@
 #include "timer.h"
 
-void* timer(void* arg){
+void* timerScheduler(void* arg){
+    tickS=0;
     pthread_mutex_lock(&lock);
     while (1){
-        if(tickP >=PROCC_PERIOD){
-            tickP=0;
-            printf("tick Process\n");
-        }
-        if(tickS >=SCHE_PERIOD){
-            tickS=0;
-            printf("tick Scheduler\n");
-        } 
-        tickP++;
-        tickS++;
         done++;
+        while (tickS<=SCHE_PERIOD)
+        {
+            tickS++;
+        }
+        tickS=0;
+        pthread_cond_signal(&cond);
+        pthread_cond_wait(&cond2,&lock);
+        //printf("\nSeñal pasatu Scheduler\n");
     }
+   
+}
 
-    pthread_cond_signal(&cond);
-    pthread_cond_wait(&cond2,&lock);
+void* timerProcess(void *arg){
+    tickP=0;
+    pthread_mutex_lock(&lock);
+    while(1){
+        done++;
+        while(tickP <=PROCC_PERIOD){
+            tickP++;
+            //printf("tick Process\n");
+        }
+        tickP=0;
+        pthread_cond_signal(&cond);
+        pthread_cond_wait(&cond2,&lock);
+        //printf("\nSeñal pasatu Process\n");
+    }
+    
 }
