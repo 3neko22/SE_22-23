@@ -22,11 +22,11 @@ void* timerProcess(void *arg){
     pthread_mutex_lock(&lock);
     while(1){
         done++;
+        tickP++;
         while(tickP <=PROCC_PERIOD){
-            tickP++;
+            tickP=0;
             //printf("tick Process\n");
         }
-        tickP=0;
         pthread_cond_signal(&cond);
         pthread_cond_wait(&cond2,&lock);
         //printf("\nSeñal pasatu Process\n");
