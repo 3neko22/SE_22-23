@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <ctype.h>
+#include "process.h"
 #define TENP_KOP 2
 
 extern int SCHE_PERIOD, PROCC_PERIOD; // Scheduler eta prozesu sorkuntzaren peridoa
@@ -18,6 +19,9 @@ extern pthread_mutex_t lock;// lehenengo mutex-a oraindik bakarrik bat erabilita
 extern pthread_t tidClock, tidTimerProcess,tidTimerScheduler;
 extern pthread_cond_t cond,cond2;
 
-extern struct PCB prozesuSortzailea;
-extern void HasieraketaPCB();
+extern struct PCB *ProzesuSortzailea;
+extern struct ProcQueue *ProzesuIlara;
+extern void hasieraketaPCB();
+extern void sortuProzesua();
+extern void printeatuProzesuak();
 #endif

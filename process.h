@@ -5,19 +5,19 @@
 #include <time.h>
 #include <stdlib.h>
 #include "globalVariables.h"
-typedef struct {
+struct proc {
     int PID;
-} process;
-typedef struct {
-    ProcQueue *next;
-    process *content;
-} *ProcQueue;
+};
 
-typedef struct {
-    ProcQueue *ilara;
+struct ProcQueue {
+    struct ProcQueue *next;
+    struct proc *content;
+};
+
+struct PCB {
+    struct ProcQueue *ilara;
     int HurrengoPID;
-} *PCB;
+};
 
-struct PCB *ProzesuSortzailea;
-struct ProcQueue *ProzesuIlara;
+
 #endif

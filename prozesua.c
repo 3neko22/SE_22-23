@@ -1,31 +1,39 @@
 #include "process.h"
-struct ProcQueue *ProzesuIlara;
-struct PCB *ProzesuSortzailea;
-void* sortuProzesua(void *arg){
-    
-    process *prozesua=(process*) malloc(sizeof(process));
+
+void hasieraketaPCB(){
+    ProzesuSortzailea=(struct PCB*) malloc(sizeof(struct PCB));
+    ProzesuIlara=(struct ProcQueue*) malloc(sizeof(struct ProcQueue));
+    ProzesuSortzailea->ilara=ProzesuIlara;
+    ProzesuSortzailea->HurrengoPID=0;
+}
+
+void sortuProzesua(){
+    struct proc *prozesua=(struct proc*) malloc(sizeof(struct proc));
     prozesua->PID=ProzesuSortzailea->HurrengoPID;
     ProzesuSortzailea->HurrengoPID+=1;
     if(ProzesuIlara->content==NULL){
         ProzesuIlara->content=prozesua;
+        printf("\nhola %d\n", ProzesuIlara->content->PID);
+
     }
     else{
-        ProcQueue *laguntzaile=(ProcQueue*) malloc(sizeof(ProcQueue));
+        struct ProcQueue *laguntzaile=(struct ProcQueue*) malloc(sizeof(struct ProcQueue));
         laguntzaile=ProzesuIlara;
         while(laguntzaile->next!=NULL){
             laguntzaile=laguntzaile->next;
         }
-        laguntzaile->next=prozesua;
+        laguntzaile->next->content=prozesua;
         free(laguntzaile);
-    }
-    
+    }  
 }
 
-void hasieraketaPCB(){
-    ProzesuSortzailea=(PCB*) malloc(sizeof(PCB));
-    ProzesuIlara=(ProcQueue*) malloc(sizeof(ProcQueue));
-    ProzesuIlara->content=NULL;
-    ProzesuIlara->next=NULL;
-    ProzesuSortzailea->ilara=ProzesuIlara;
-    ProzesuSortzailea->HurrengoPID=0;
+void printeatuProzesuak(){
+    struct ProcQueue *laguntzaile=(struct ProcQueue*) malloc(sizeof(struct ProcQueue));
+    laguntzaile=ProzesuIlara;
+    while(laguntzaile->next!=NULL){
+        printf("\nProzesua - PID: %d\n",laguntzaile->content->PID);
+        laguntzaile=laguntzaile->next;
+    }
+    free(laguntzaile);
 }
+

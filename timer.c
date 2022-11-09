@@ -5,11 +5,11 @@ void* timerScheduler(void* arg){
     pthread_mutex_lock(&lock);
     while (1){
         done++;
-        while (tickS<=SCHE_PERIOD)
+        tickS++;
+        if (tickS<=SCHE_PERIOD)
         {
-            tickS++;
+            tickS=0;
         }
-        tickS=0;
         pthread_cond_signal(&cond);
         pthread_cond_wait(&cond2,&lock);
         //printf("\nSeñal pasatu Scheduler\n");
@@ -23,9 +23,10 @@ void* timerProcess(void *arg){
     while(1){
         done++;
         tickP++;
-        while(tickP <=PROCC_PERIOD){
+        if(tickP <=PROCC_PERIOD){
             tickP=0;
             //printf("tick Process\n");
+            //sortuProzesua();
         }
         pthread_cond_signal(&cond);
         pthread_cond_wait(&cond2,&lock);
