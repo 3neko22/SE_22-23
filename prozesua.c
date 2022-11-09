@@ -18,22 +18,24 @@ void sortuProzesua(){
     }
     else{
         struct ProcQueue *laguntzaile=(struct ProcQueue*) malloc(sizeof(struct ProcQueue));
+        struct ProcQueue *new_proc=(struct ProcQueue*) malloc(sizeof(struct ProcQueue));
         laguntzaile=ProzesuIlara;
         while(laguntzaile->next!=NULL){
             laguntzaile=laguntzaile->next;
         }
-        laguntzaile->next->content=prozesua;
+        new_proc->content=prozesua;
+        laguntzaile->next=new_proc;
         free(laguntzaile);
+        
+
     }  
 }
 
 void printeatuProzesuak(){
-    struct ProcQueue *laguntzaile=(struct ProcQueue*) malloc(sizeof(struct ProcQueue));
-    laguntzaile=ProzesuIlara;
-    while(laguntzaile->next!=NULL){
+    struct ProcQueue *laguntzaile=ProzesuIlara;
+    while(laguntzaile!=NULL){
         printf("\nProzesua - PID: %d\n",laguntzaile->content->PID);
         laguntzaile=laguntzaile->next;
     }
-    free(laguntzaile);
 }
 

@@ -54,24 +54,35 @@ int main (int argc, char *argv[]){
             printf("\n mutex init has failed\n");
             return -1;
     }
-    hasieraketaPCB();
-    sortuProzesua();
-    sortuProzesua();
+    //hasieraketaPCB();
+    // sortuProzesua();
+    // sortuProzesua();
+
     printeatuProzesuak();
 
     //Exekuzio-kodea
-    
-    // while (1){
-    //     if(pthread_create(&tidClock,NULL,&erlojua,NULL)!=0){
-    //         return -1;
-    //     }
-    //     if(pthread_create(&tidTimerProcess,NULL,&timerProcess,NULL)!=0){
-    //         return -1;
-    //     }
-    //     if(pthread_create(&tidTimerScheduler,NULL,&timerScheduler,NULL)!=0){
-    //         return -1;
-    //     }
-        
-    // }
+    while (1){
+        //hariak sortu
+        if(pthread_create(&tidClock,NULL,&erlojua,NULL)!=0){
+            return -1;
+        }
+        if(pthread_create(&tidTimerProcess,NULL,&timerProcess,NULL)!=0){
+            return -1;
+        }
+        if(pthread_create(&tidTimerScheduler,NULL,&timerScheduler,NULL)!=0){
+            return -1;
+        }
+
+        //Hariak amaitu direla sahiestu
+        if(pthread_join(tidTimerProcess,NULL)!=0){
+            return -1;
+        }
+        if(pthread_join(tidTimerScheduler,NULL)!=0){
+            return -1;
+        }
+        if(pthread_join(tidClock,NULL)!=0){
+            return -1;
+        }  
+    }
         
 }
