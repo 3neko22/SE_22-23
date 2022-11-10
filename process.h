@@ -5,18 +5,14 @@
 #include <time.h>
 #include <stdlib.h>
 #include "globalVariables.h"
-struct proc {
-    int PID;
-};
-
-struct ProcQueue {
-    struct ProcQueue *next;
-    struct proc *content;
-};
-
 struct PCB {
-    struct ProcQueue *ilara;
-    int HurrengoPID;
+    int PID;
+    struct PCB *next;
+};
+
+struct ProzesuSistema {
+    struct PCB** ilara;
+    int hurrengoPID;
 };
 
 

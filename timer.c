@@ -6,8 +6,9 @@ void* timerScheduler(void* arg){
     while (1){
         done++;
         tickS++;
-        if (tickS<=SCHE_PERIOD)
+        if (tickS>=SCHE_PERIOD)
         {
+            //sem_post(SEM_SCHED);
             tickS=0;
         }
         pthread_cond_signal(&cond);
@@ -23,10 +24,10 @@ void* timerProcess(void *arg){
     while(1){
         done++;
         tickP++;
-        if(tickP <=PROCC_PERIOD){
+        if(tickP >=PROCC_PERIOD){
             tickP=0;
-            //printf("tick Process\n");
-            //sortuProzesua();
+            sem_post(SEM_PROC);
+            printf("\nENTRA\n");
         }
         pthread_cond_signal(&cond);
         pthread_cond_wait(&cond2,&lock);
