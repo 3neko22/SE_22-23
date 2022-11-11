@@ -6,14 +6,12 @@
 #include <stdlib.h>
 #include "globalVariables.h"
 struct PCB {
-    int PID;
-    struct PCB *next;
+    int PID;//Uneko prozesuaren identifikazio zenbakia
+    struct PCB *next;// hurrengo prozesuaren erakuslea gordeko du
 };
 
 struct ProzesuSistema {
-    struct PCB** ilara;
-    int hurrengoPID;
+    struct PCB** ilara;// array bat non gordeko dira PCB-aren prozesuen erakusleak
+    int hurrengoPID;// Atzituko den hurrengo prozesuaren PID gordeko du
 };
-
-
 #endif

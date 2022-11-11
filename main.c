@@ -42,7 +42,7 @@ int main (int argc, char *argv[]){
             case ':'://"campo" batean ez bada jartzen baliorik, adibiez, -s [hutsa] -p 40
                 printf("\n"RED"Ez duzu sartu baliorik"RESET_COLOR"\n");
                 break;
-            case '?':
+            case '?'://adibidez: ./Programa -- sartzerakoan
                 printf("\nDEFAULT BALIOAK SARTUTA\n");
         }
         

@@ -40,7 +40,7 @@ void* sortuProzesua(void *arg){
             if(posizioa>0){
                 ProzesuSortzailea->ilara[posizioa-1]->next=prozesua;
             }
-            ProzesuSortzailea->hurrengoPID+=1;
+            ProzesuSortzailea->hurrengoPID+=1;//Eguneratu 
         }
         printeatuProzesuak();
     }

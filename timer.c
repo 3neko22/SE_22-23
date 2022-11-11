@@ -5,18 +5,21 @@ int tickS,tickP;
 //Scheduler timer-aren funtzioa
 void* timerScheduler(void* arg){
     tickS=0;
+    //Mutex lock-a blokeatzen du 
     pthread_mutex_lock(&lock);
     while (1){
         done++;
         tickS++;
         if (tickS>=SCHE_PERIOD)
         {
+            //seinalea bidaltzen dio scheduler-ari
             if(sem_post(&SEM_SCHED)!=0){
                 printf("\n"RED"NO funciona la señal schduler"RESET_COLOR"\n");
             }
             tickS=0;   
         }
         pthread_cond_signal(&cond);
+        //Itxaron cond2 bidaltzen badu seinalea 
         pthread_cond_wait(&cond2,&lock);
     }
    
