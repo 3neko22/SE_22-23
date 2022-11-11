@@ -5,7 +5,6 @@
 #include <time.h>
 #include <stdlib.h>
 #include "globalVariables.h"
-
-
+#include "process.h"
 
 #endif

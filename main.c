@@ -8,12 +8,10 @@ pthread_cond_t cond2=PTHREAD_COND_INITIALIZER;
 
 pthread_mutex_t lock=PTHREAD_MUTEX_INITIALIZER;
 
-sem_t *SEM_PROC,*SEM_SCHED;
+sem_t SEM_PROC,SEM_SCHED,SEM_PRINT;
 struct ProzesuSistema *ProzesuSortzailea;
 
 int done;
-
-int tickP,tickS;
 
 int SCHE_PERIOD,PROCC_PERIOD;
 //Programa nagusia
@@ -39,11 +37,11 @@ int main (int argc, char *argv[]){
     }
     printf("\n Scheduler-aren periodoa %d\n",SCHE_PERIOD);
     printf("\n Process-aren peridoa %d \n",PROCC_PERIOD);
+
     //Hasieraketak
-    done=0;
-    tickP=0;tickS=0;
+ 
     if (pthread_cond_init(&cond,NULL)!=0){//Baldintza hari sortu errorea baldin badago orduan atera
-        printf("\n condicional mutex initialitation has failed\n");
+        printf("\n \"conda\" Baldintza mutex-a\n");
         return -1;
     }
     if(pthread_cond_init(&cond2,NULL)!=0){
@@ -54,52 +52,52 @@ int main (int argc, char *argv[]){
         printf("\n mutex init has failed\n");
         return -1;
     }
-    printf("\nHOLA\n");
-    if(sem_init(SEM_PROC,0,1)!=0){
+    if(sem_init(&SEM_PROC,0,0)!=0){
         return -1;
     }
-     if(sem_init(SEM_SCHED,0,1)!=0){
+    if(sem_init(&SEM_SCHED,0,0)!=0){
         return -1;
     }
-    printf("\nHOLA2\n");
-    hasieraketaPCB();
-    //Exekuzio-kodea
-    while (1){
-        //hariak sortu
-        if(pthread_create(&tidClock,NULL,&erlojua,NULL)!=0){
-            return -1;
-        }
-        if(pthread_create(&tidTimerProcess,NULL,&timerProcess,NULL)!=0){
-            return -1;
-        }
-        if(pthread_create(&tidTimerScheduler,NULL,&timerScheduler,NULL)!=0){
-            return -1;
-        }
-        // if(pthread_create(&tidProcessGenerator,NULL,&sortuProzesua,NULL)!=0){
-        //     return -1;
-        // }
-        // if(pthread_create(&tidScheduler,NULL,&scheduler_funtzioa,NULL)!=0){
-        //     return -1;
-        // }
+    if(sem_init(&SEM_PRINT,0,0)!=0){
+        return -1;
+    }
 
-        //Hariak amaitu direla sahiestu
-        if(pthread_join(tidTimerProcess,NULL)!=0){
-            return -1;
-        }
-        if(pthread_join(tidTimerScheduler,NULL)!=0){
-            return -1;
-        }
-        // if(pthread_join(tidProcessGenerator,NULL)!=0){
-        //     return -1;
-        // }
-        // if(pthread_join(tidScheduler,NULL)!=0){
-        //     return -1;
-        // }
-        if(pthread_join(tidClock,NULL)!=0){
-            return -1;
-        }
-        
-        
+    hasieraketaPCB();
+    done=0;
+
+    //Exekuzio-kodea
+    //hariak sortu
+    if(pthread_create(&tidClock,NULL,&erlojua,NULL)!=0){
+        return -1;
     }
-        
+    if(pthread_create(&tidTimerProcess,NULL,&timerProcess,NULL)!=0){
+        return -1;
+    }
+    if(pthread_create(&tidProcessGenerator,NULL,&sortuProzesua,NULL)!=0){
+        return -1;
+    }
+    if(pthread_create(&tidTimerScheduler,NULL,&timerScheduler,NULL)!=0){
+        return -1;
+    }
+    if(pthread_create(&tidScheduler,NULL,&scheduler_funtzioa,NULL)!=0){
+        return -1;
+    }
+
+    //Hariak amaitu direla sahiestu
+    if(pthread_join(tidTimerProcess,NULL)!=0){
+        return -1;
+    }
+    if(pthread_join(tidTimerScheduler,NULL)!=0){
+        return -1;
+    }
+    if(pthread_join(tidProcessGenerator,NULL)!=0){
+        return -1;
+    }
+    if(pthread_join(tidScheduler,NULL)!=0){
+        return -1;
+    }
+    if(pthread_join(tidClock,NULL)!=0){
+        return -1;
+    }
 }
+
