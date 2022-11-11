@@ -1,11 +1,10 @@
 #include "scheduler.h"
 
 void* scheduler_funtzioa(void* arg){
+    //Oraindik ez du ezer egingo, bakarrik zerbait egiten duela
     while(1){
         if(sem_wait(&SEM_SCHED)!=0){
-        printf("\nShceduler semaforoa ez du funtzionatzen\n");
-         }
-    printf("\nHAZ COSAS\n");
+            printf("\n"RED"Shceduler semaforoa ez du funtzionatzen"RESET_COLOR"\n");
+        }
     }
-   
 }
