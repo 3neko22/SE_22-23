@@ -5,7 +5,6 @@
 #include <time.h>
 #include <stdlib.h>
 #include "globalVariables.h"
-extern pthread_t tidTimerProcess,tidTimerScheduler;
-void* timerScheduler(void *arg);
-void* timerProcess(void *arg);
+extern struct haria tidTimerProcess,tidTimerScheduler;
+void* timer(void *arg);
 #endif

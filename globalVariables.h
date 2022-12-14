@@ -22,13 +22,27 @@ extern int done; //done erabiliko da jakiteko zenbat timer amaitu badute
 // lehenengo mutex-a oraindik bakarrik bat erabilita
 extern pthread_mutex_t lock;
 //6 hari sortuta, bata erlojuarentzat, timer bakoitzak beste bat, prozesu sortzailearentzat beste bat eta seigarrena scheduler-a.
-extern pthread_t tidClock, tidTimerProcess,tidTimerScheduler,tidProcessGenerator,tidTimerScheduler;
+//extern pthread_t tidClock, tidTimerProcess,tidTimerScheduler,tidProcessGenerator;
 //Bi baldintza mutex-a
 extern pthread_cond_t cond,cond2;
 extern struct ProzesuSistema *ProzesuSortzailea;
 
 //Semaforoak, bata prozesu sortzailearentzat eta bestea scheduler-arentzat
 extern sem_t SEM_PROC,SEM_SCHED;
+
+
+/*
+    Egiturak
+*/
+
+struct haria{
+    pthread_t thread;
+    int scheduler_o_process;
+};
+
+
+
+
 
 // PCB kudeaketan beharrezkoak diren hasieraketak eta memoria atzipenak egingo du
 extern void hasieraketaPCB();

@@ -3,7 +3,7 @@
 #include "timer.h"
 
 //Posfix hariak
-pthread_t tidClock,tidTimerProcess,tidTimerScheduler,tidProcessGenerator,tidScheduler;
+struct haria tidClock,tidTimerProcess,tidTimerScheduler,tidProcessGenerator,tidScheduler;
 
 //Conda mutex eta mutex lock deklaratzeko
 pthread_cond_t cond=PTHREAD_COND_INITIALIZER;
@@ -80,45 +80,48 @@ int main (int argc, char *argv[]){
     */
 
     //Hariak sortu
-    if(pthread_create(&tidClock,NULL,&erlojua,NULL)!=0){
+    tidTimerProcess.scheduler_o_process=1;
+    tidScheduler.scheduler_o_process=0;
+
+    if(pthread_create(&tidClock.thread,NULL,&erlojua,NULL)!=0){
         printf("\n"RED"Hari erlojua izan du errorea"RESET_COLOR"\n");
         return -1;
     }
-    if(pthread_create(&tidTimerProcess,NULL,&timerProcess,NULL)!=0){
+    if(pthread_create(&tidTimerProcess.thread,NULL,&timer,&tidTimerProcess.scheduler_o_process)!=0){
         printf("\n"RED"Hari Timer-Process izan du errorea"RESET_COLOR"\n");
         return -1;
     }
-    if(pthread_create(&tidProcessGenerator,NULL,&sortuProzesua,NULL)!=0){
+    if(pthread_create(&tidProcessGenerator.thread,NULL,&sortuProzesua,NULL)!=0){
         printf("\n"RED"Hari prozesuSortzailea izan du errorea"RESET_COLOR"\n");
         return -1;
     }
-    if(pthread_create(&tidTimerScheduler,NULL,&timerScheduler,NULL)!=0){
+    if(pthread_create(&tidTimerScheduler.thread,NULL,&timer,&tidScheduler.scheduler_o_process)!=0){
         printf("\n"RED"Hari Timer-Scheduler izan du errorea"RESET_COLOR"\n");
         return -1;
     }
-    if(pthread_create(&tidScheduler,NULL,&scheduler_funtzioa,NULL)!=0){
+    if(pthread_create(&tidScheduler.thread,NULL,&scheduler_funtzioa,NULL)!=0){
         printf("\n"RED"Hari Scheduler izan du errorea"RESET_COLOR"\n");
         return -1;
     }
 
     //Hariak amaitu direla sahiestu
-    if(pthread_join(tidTimerProcess,NULL)!=0){
+    if(pthread_join(tidTimerProcess.thread,NULL)!=0){
         printf("\n"RED"Hari Timer-Process izan du errorea"RESET_COLOR"\n");
         return -1;
     }
-    if(pthread_join(tidTimerScheduler,NULL)!=0){
+    if(pthread_join(tidTimerScheduler.thread,NULL)!=0){
         printf("\n"RED"Hari Timer-Scheduler izan du errorea"RESET_COLOR"\n");
         return -1;
     }
-    if(pthread_join(tidProcessGenerator,NULL)!=0){
+    if(pthread_join(tidProcessGenerator.thread,NULL)!=0){
         printf("\n"RED"Hari prozesuSortzailea izan du errorea"RESET_COLOR"\n");
         return -1;
     }
-    if(pthread_join(tidScheduler,NULL)!=0){
+    if(pthread_join(tidScheduler.thread,NULL)!=0){
         printf("\n"RED"Hari Scheduler izan du errorea"RESET_COLOR"\n");
         return -1;
     }
-    if(pthread_join(tidClock,NULL)!=0){
+    if(pthread_join(tidClock.thread,NULL)!=0){
         printf("\n"RED"Hari erlojua izan du errorea"RESET_COLOR"\n");
         return -1;
     }
