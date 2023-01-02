@@ -13,8 +13,8 @@ void *printeatuProzesuak(){
     printf("\n-----------------\n");
     int muga=ProzesuSortzailea->hurrengoPID;
     for(int i=0;i<muga;i++){
-        printf("\n"BLUE"Prozesua - PID:"RESET_COLOR""YELOW" %d"RESET_COLOR"\n",ProzesuSortzailea->ilara[i]->PID);
-    }       
+        printf("\n"BLUE"Prozesua - PID:"RESET_COLOR""YELOW" %d"BLUE"-State:"YELOW" %d"RESET_COLOR"\n",ProzesuSortzailea->ilara[i]->PID,ProzesuSortzailea->ilara[i]->state);
+    }     
 }
 //Prozesu berri bat sortuko duen funtzioa
 void* sortuProzesua(void *arg){
@@ -30,7 +30,6 @@ void* sortuProzesua(void *arg){
         if(ProzesuSortzailea->hurrengoPID==Prozesu_KOP){
             printf("\n"RED"Prozesu kopuru maximora iritsita"RESET_COLOR"\n");
         }
-
         else{
             //Azken posizioa hartu
             int posizioa=ProzesuSortzailea->hurrengoPID;

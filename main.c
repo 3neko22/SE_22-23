@@ -12,7 +12,7 @@ pthread_cond_t cond2=PTHREAD_COND_INITIALIZER;
 pthread_mutex_t lock=PTHREAD_MUTEX_INITIALIZER;
 
 //Semaforoen deklarazioa
-sem_t SEM_PROC,SEM_SCHED;
+sem_t SEM_PROC,SEM_SCHED,EZABAKETA;
 
 //Prozesu ilara gordeko duen 
 struct ProzesuSistema *ProzesuSortzailea;
@@ -23,15 +23,17 @@ int done;
 // Scheduler-a eta Prozesu Sortzailearen periodoak gordeko ditu
 int SCHE_PERIOD,PROCC_PERIOD;
 
+int SCHE_MOTA;
 
 //Programa nagusia
 int main (int argc, char *argv[]){
     //Balioak defektuz
-    SCHE_PERIOD=40000;
+    SCHE_PERIOD=4000;
     PROCC_PERIOD=30000;
     //Exekuzio komandoaren formaren aukerak analizatzeko erabiliko da
     int opt;
-    while ((opt=getopt(argc,argv,":s:p:"))!=-1){
+    char* scheduler_mota;
+    while ((opt=getopt(argc,argv,":s:p:m:"))!=-1){
         switch(opt){
             case 's'://scheduler
                 SCHE_PERIOD=atoi(optarg);
@@ -39,6 +41,13 @@ int main (int argc, char *argv[]){
             case 'p'://process generator
                 PROCC_PERIOD=atoi(optarg);
                 break;
+            case 'm':
+                if(strcmp(optarg,"fifo")==0){
+                    printf("\nFIFO eginda\n");
+                }
+                else if(strcmp(optarg,"cosa")==0){
+                    printf("\nBeste mota sartuta\n");
+                }
             case ':'://"campo" batean ez bada jartzen baliorik, adibiez, -s [hutsa] -p 40
                 printf("\n"RED"Ez duzu sartu baliorik"RESET_COLOR"\n");
                 break;
@@ -81,7 +90,8 @@ int main (int argc, char *argv[]){
 
     //Hariak sortu
     tidTimerProcess.scheduler_o_process=1;
-    tidScheduler.scheduler_o_process=0;
+    tidTimerScheduler.scheduler_o_process=0;
+    tidScheduler.scheduler_mota=0;
 
     if(pthread_create(&tidClock.thread,NULL,&erlojua,NULL)!=0){
         printf("\n"RED"Hari erlojua izan du errorea"RESET_COLOR"\n");
@@ -91,15 +101,15 @@ int main (int argc, char *argv[]){
         printf("\n"RED"Hari Timer-Process izan du errorea"RESET_COLOR"\n");
         return -1;
     }
+    if(pthread_create(&tidTimerScheduler.thread,NULL,&timer,&tidTimerScheduler.scheduler_o_process)!=0){
+        printf("\n"RED"Hari Timer-Scheduler izan du errorea"RESET_COLOR"\n");
+        return -1;
+    }
     if(pthread_create(&tidProcessGenerator.thread,NULL,&sortuProzesua,NULL)!=0){
         printf("\n"RED"Hari prozesuSortzailea izan du errorea"RESET_COLOR"\n");
         return -1;
     }
-    if(pthread_create(&tidTimerScheduler.thread,NULL,&timer,&tidScheduler.scheduler_o_process)!=0){
-        printf("\n"RED"Hari Timer-Scheduler izan du errorea"RESET_COLOR"\n");
-        return -1;
-    }
-    if(pthread_create(&tidScheduler.thread,NULL,&scheduler_funtzioa,NULL)!=0){
+    if(pthread_create(&tidScheduler.thread,NULL,&scheduler_funtzioa,&tidScheduler.scheduler_mota)!=0){
         printf("\n"RED"Hari Scheduler izan du errorea"RESET_COLOR"\n");
         return -1;
     }

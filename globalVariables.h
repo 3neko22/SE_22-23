@@ -5,6 +5,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include <ctype.h>
 #include <semaphore.h>
 #define TENP_KOP 2
@@ -28,7 +29,7 @@ extern pthread_cond_t cond,cond2;
 extern struct ProzesuSistema *ProzesuSortzailea;
 
 //Semaforoak, bata prozesu sortzailearentzat eta bestea scheduler-arentzat
-extern sem_t SEM_PROC,SEM_SCHED;
+extern sem_t SEM_PROC,SEM_SCHED,EZABAKETA;
 
 
 /*
@@ -38,6 +39,7 @@ extern sem_t SEM_PROC,SEM_SCHED;
 struct haria{
     pthread_t thread;
     int scheduler_o_process;
+    int scheduler_mota;// Shceduler-aren mota erabakitzeko
 };
 
 

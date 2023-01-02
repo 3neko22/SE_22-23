@@ -1,15 +1,16 @@
 #include "timer.h"
 // Timer zenbat denbora iraun behar du scheduler-ari eta prozesu sortzaileari señal bat bidaltzeko
-int tick;
+
 
 //Scheduler timer-aren funtzioa
 void* timer(void* arg){
-    tick=0;
+
+    int tick=0;
     //Mutex lock-a blokeatzen du 
     pthread_mutex_lock(&lock);
-
+    int data= *(int *) arg;
     //Scheduler
-    if(((int *)arg)==0){
+    if(data==0){
         while (1){
             done++;
             tick++;
