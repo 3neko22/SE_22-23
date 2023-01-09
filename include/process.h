@@ -16,6 +16,7 @@ struct PCB {
 struct ProzesuSistema {
     struct PCB** ilara;// array bat non gordeko dira PCB-aren prozesuen erakusleak
     int hurrengoPID;// Atzituko den hurrengo prozesuaren PID gordeko du
+    int elem_kop;
 };
 
 

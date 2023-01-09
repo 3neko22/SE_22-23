@@ -1,4 +1,4 @@
-#include "clock.h"
+#include "../include/clock.h"
 
  void* erlojua(void* arg){
     while(1){

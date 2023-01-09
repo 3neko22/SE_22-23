@@ -1,6 +1,6 @@
-#include "globalVariables.h"
-#include "clock.h"
-#include "timer.h"
+#include "include/globalVariables.h"
+#include "include/clock.h"
+#include "include/timer.h"
 
 //Posfix hariak
 struct haria tidClock,tidTimerProcess,tidTimerScheduler,tidProcessGenerator,tidScheduler;
@@ -12,7 +12,7 @@ pthread_cond_t cond2=PTHREAD_COND_INITIALIZER;
 pthread_mutex_t lock=PTHREAD_MUTEX_INITIALIZER;
 
 //Semaforoen deklarazioa
-sem_t SEM_PROC,SEM_SCHED,EZABAKETA;
+sem_t SEM_PROC,SEM_SCHED;
 
 //Prozesu ilara gordeko duen 
 struct ProzesuSistema *ProzesuSortzailea;
@@ -28,11 +28,12 @@ int SCHE_MOTA;
 //Programa nagusia
 int main (int argc, char *argv[]){
     //Balioak defektuz
-    SCHE_PERIOD=4000;
+    SCHE_PERIOD=40000;
     PROCC_PERIOD=30000;
     //Exekuzio komandoaren formaren aukerak analizatzeko erabiliko da
     int opt;
     char* scheduler_mota;
+    tidScheduler.scheduler_mota=1;
     while ((opt=getopt(argc,argv,":s:p:m:"))!=-1){
         switch(opt){
             case 's'://scheduler
@@ -43,10 +44,15 @@ int main (int argc, char *argv[]){
                 break;
             case 'm':
                 if(strcmp(optarg,"fifo")==0){
+                    tidScheduler.scheduler_mota=0;
                     printf("\nFIFO eginda\n");
                 }
                 else if(strcmp(optarg,"cosa")==0){
+                    tidScheduler.scheduler_mota=1;
                     printf("\nBeste mota sartuta\n");
+                }
+                else{
+                    tidScheduler.scheduler_mota=1;
                 }
             case ':'://"campo" batean ez bada jartzen baliorik, adibiez, -s [hutsa] -p 40
                 printf("\n"RED"Ez duzu sartu baliorik"RESET_COLOR"\n");
@@ -91,7 +97,7 @@ int main (int argc, char *argv[]){
     //Hariak sortu
     tidTimerProcess.scheduler_o_process=1;
     tidTimerScheduler.scheduler_o_process=0;
-    tidScheduler.scheduler_mota=0;
+   
 
     if(pthread_create(&tidClock.thread,NULL,&erlojua,NULL)!=0){
         printf("\n"RED"Hari erlojua izan du errorea"RESET_COLOR"\n");
@@ -109,7 +115,7 @@ int main (int argc, char *argv[]){
         printf("\n"RED"Hari prozesuSortzailea izan du errorea"RESET_COLOR"\n");
         return -1;
     }
-    if(pthread_create(&tidScheduler.thread,NULL,&scheduler_funtzioa,&tidScheduler.scheduler_mota)!=0){
+    if(pthread_create(&tidScheduler.thread,NULL,&scheduler_funtzioa,NULL)!=0){
         printf("\n"RED"Hari Scheduler izan du errorea"RESET_COLOR"\n");
         return -1;
     }

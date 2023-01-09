@@ -1,4 +1,4 @@
-#include "timer.h"
+#include "../include/timer.h"
 // Timer zenbat denbora iraun behar du scheduler-ari eta prozesu sortzaileari señal bat bidaltzeko
 
 
